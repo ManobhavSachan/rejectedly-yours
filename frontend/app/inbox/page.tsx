@@ -13,7 +13,7 @@ import {
 import Loader from "@/components/ui/loader";
 import { useAppContext } from "../context/ctx";
 
-export default function Tabled() {
+export default function Inbox() {
   const { jobs, loading } = useAppContext();
   const [entries, setEntries] = useState<Entry[]>([]);
   console.log(jobs, loading);
@@ -23,7 +23,9 @@ export default function Tabled() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">All Entries</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800 flex items-center justify-center">
+        Inbox
+      </h2>
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <Table>
           <TableHeader>

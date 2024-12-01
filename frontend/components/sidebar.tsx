@@ -14,9 +14,9 @@ export default function Sidebar() {
             </Link>
           </li>
           <li>
-            <Link href="/tabled" className="flex items-center space-x-2 p-2 rounded hover:bg-indigo-50 text-gray-700 hover:text-indigo-700">
+            <Link href="/inbox" className="flex items-center space-x-2 p-2 rounded hover:bg-indigo-50 text-gray-700 hover:text-indigo-700">
               <Table className="h-5 w-5" />
-              <span>Tabled</span>
+              <span>Inbox</span>
             </Link>
           </li>
         </ul>
