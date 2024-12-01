@@ -3,7 +3,8 @@
 ## Introduction
 
 **I understand if you don't have time to read the whole file, so watch this video and Images to understand the project in a nutshell. :)
-You can now have a dashboard to view the status of your job application, add calendar events, and send follow-up emails in a click, all powered by LLM so you don't make a mistake. :)**
+You can now have a dashboard to view the status of your job application, add calendar events, and send follow-up emails in a click, all powered by LLM so you don't make a mistake. :)
+The only thing you need to do is apply and answer the interview, rest all is sorted, organised and drafted for you. :)**
 
 Rejectedly Yours is a comprehensive application designed to help users track their job application statuses by integrating with Gmail and utilising AI to analyze email content. The application is built using a combination of Python for backend processing and Next.js for the frontend interface.
 
