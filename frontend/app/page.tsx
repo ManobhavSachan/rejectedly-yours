@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { fetchEntries, Entry } from '@/utils/api'
 import { Card, CardContent } from '@/components/ui/card'
+import { useAppContext } from './context/ctx'
 
 const columns = [
   'Applied',
@@ -16,21 +17,20 @@ const columns = [
 ]
 
 export default function Home() {
+  const { jobs, loading, updateJobStatus } = useAppContext();
   const [entries, setEntries] = useState<{ [key: string]: Entry[] }>({})
 
   useEffect(() => {
-    fetchEntries().then((data) => {
-      const grouped = data.reduce((acc, entry) => {
-        const status = entry.status.charAt(0).toUpperCase() + entry.status.slice(1)
+    const grouped = jobs.reduce((acc, entry) => {
+      const status = entry.status.charAt(0).toUpperCase() + entry.status.slice(1)
         if (!acc[status]) {
           acc[status] = []
         }
         acc[status].push(entry)
         return acc
       }, {} as { [key: string]: Entry[] })
-      setEntries(grouped)
-    })
-  }, [])
+    setEntries(grouped)
+  }, [loading])
 
   const onDragEnd = (result: any) => {
     if (!result.destination) return
@@ -52,6 +52,9 @@ export default function Home() {
       const destItems = Array.from(entries[destColumn] || [])
       const [movedItem] = sourceItems.splice(source.index, 1)
       destItems.splice(destination.index, 0, movedItem)
+      
+      updateJobStatus(movedItem.id, destColumn)
+
       setEntries({
         ...entries,
         [sourceColumn]: sourceItems,

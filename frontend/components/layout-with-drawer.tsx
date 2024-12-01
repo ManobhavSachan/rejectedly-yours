@@ -8,7 +8,7 @@ import Header from '@/components/header'
 export default function LayoutWithDrawer({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
 }) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -23,7 +23,6 @@ export default function LayoutWithDrawer({
         </Drawer>
       </div>
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header onMenuClick={() => setIsOpen(true)} />
         <main className="flex-1 overflow-x-hidden overflow-y-auto">
           {children}
         </main>
