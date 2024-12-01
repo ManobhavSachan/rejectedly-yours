@@ -8,6 +8,9 @@ The only thing you need to do is apply and answer the interview, rest all is sor
 
 Rejectedly Yours is a comprehensive application designed to help users track their job application statuses by integrating with Gmail and utilising AI to analyze email content. The application is built using a combination of Python for backend processing and Next.js for the frontend interface.
 
+## Video
+[![Watch the video](https://img.youtube.com/vi/m7lSpwLMx_g/maxresdefault.jpg)](https://www.youtube.com/watch?v=m7lSpwLMx_g)
+
 ## Table of Contents
 
 - [Features](#features)
