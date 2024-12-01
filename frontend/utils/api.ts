@@ -1,3 +1,7 @@
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon(process.env.DATABASE_URL || "");
+
 export interface Entry {
   id: string;
   message_id: string;
@@ -11,23 +15,20 @@ export interface Entry {
   created_at: string;
 }
 
-const mockData: Entry[] = [
-];
-
 export async function fetchEntries(): Promise<Entry[]> {
-  // Simulate API call delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return mockData;
+  const entries = await sql`SELECT * FROM emails`;
+  return entries as Entry[];
 }
 
 export async function updateEntry(id: string, status: string): Promise<Entry> {
-  // Simulate API call delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  const entry = mockData.find((entry) => entry.id === id);
+  const [entry] = await sql`
+    UPDATE emails
+    SET status = ${status}
+    WHERE id = ${id}
+    RETURNING *;
+  `;
   if (!entry) {
     throw new Error(`Entry with id ${id} not found`);
   }
-  entry.status = status as Entry["status"];
-  return entry;
+  return entry as Entry;
 }
