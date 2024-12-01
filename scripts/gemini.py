@@ -8,6 +8,16 @@ genai.configure(api_key="AIzaSyAlIT4UaBB-rqe7Ofx-HCLx4NQJ6grt1EM")
 model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"response_mime_type": "application/json"})
 
 # Pydantic model (unchanged)
+
+STATUS_OPTIONS = {
+    "applied",
+    "in_progress",
+    "interview",
+    "rejected",
+    "job_offered",
+    "accepted",
+    "no_reply"
+}
 class EmailAnalysis(BaseModel):
     is_job_update: bool
     company_name: str
@@ -16,12 +26,31 @@ class EmailAnalysis(BaseModel):
     position: str
     date: str
     suggested_action: str
+    status: str
+    sender_email: str
 
 
 def analyze_emails_with_ai(email_data):
     for email in email_data:
-        prompt = f"Analyze the following email and determine if it's a job application email. If it is, extract the company name, application status, a short summary, and suggested action.  Please output ONLY valid JSON in the following format:\n{{'is_job_update': bool, 'position': 'string', 'date': 'string', 'company_name': 'string', 'application_status': 'string', 'summary': 'string', 'suggested_action': 'string'}}\nSubject: {
-            email['subject']}\n\nBody: {email['full_body']}\n\nDate: {email['date']} Give only the json reponse in text format nothing else"
+        prompt = f"""Analyze the following email and determine if it's a job application email. If it is, extract the company name, application status, a short summary, and suggested action, sender, date. Please output ONLY valid JSON in the following format:
+        {{
+            'is_job_update': bool,
+            'message_id': 'string',
+            'position': 'string',
+            'date': 'string',
+            'company_name': 'string',
+            'summary': 'string',
+            'suggested_action': 'string',
+            'status': 'applied' | 'in_progress' | 'interview' | 'rejected' | 'job_offered' | 'accepted' | 'no_reply',
+            'sender_email': 'string'
+        }}
+        Subject: {email['subject']}
+        Body: {email['full_body']}
+        Sender: {email['from']}
+        Date: {email['date']}
+        Snippet: {email['snippet']}
+        Message ID: {email['message_id']}
+        Give only the json response in text format nothing else"""
         response = model.generate_content(prompt)
         print(response.text)
 

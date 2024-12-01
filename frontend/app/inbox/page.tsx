@@ -12,14 +12,22 @@ import {
 } from "@/components/ui/table";
 import Loader from "@/components/ui/loader";
 import { useAppContext } from "../context/ctx";
+import JobDetailsModal from "@/components/job-details-modal";
 
 export default function Inbox() {
   const { jobs, loading } = useAppContext();
   const [entries, setEntries] = useState<Entry[]>([]);
-  console.log(jobs, loading);
+  const [selectedJob, setSelectedJob] = useState<Entry | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     setEntries(jobs);
   }, [loading]);
+
+  const handleRowClick = (entry: Entry) => {
+    setSelectedJob(entry);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="p-6">
@@ -45,17 +53,24 @@ export default function Inbox() {
               </TableRow>
             ) : (
               entries.map((entry) => (
-                <TableRow key={entry.id}>
-                  <TableCell className="font-medium">{entry.title}</TableCell>
+                <TableRow key={entry.id} onClick={() => handleRowClick(entry)} className="cursor-pointer">
+                  <TableCell className="font-medium">{entry.position}</TableCell>
                   <TableCell>{entry.company}</TableCell>
                   <TableCell>{entry.status}</TableCell>
-                  <TableCell>{entry.date}</TableCell>
+                  <TableCell>{entry.created_at}</TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
         </Table>
       </div>
+      {selectedJob && (
+        <JobDetailsModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          job={selectedJob}
+        />
+      )}
     </div>
   );
 }

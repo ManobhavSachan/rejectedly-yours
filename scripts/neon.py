@@ -1,45 +1,77 @@
 import json
+import psycopg2
 from datetime import datetime
-
+from os import getenv
+import os
+from dotenv import load_dotenv
+from urllib.parse import urlparse
 # Define the possible statuses
 STATUS_OPTIONS = {
-    "Applied",
-    "In Progress",
-    "Interview",
-    "Rejected",
-    "Job Offer",
-    "Accepted",
-    "No Reply"
+    "applied",
+    "in_progress",
+    "interview",
+    "rejected",
+    "job_offered",
+    "accepted",
+    "no_reply"
 }
 
-def is_job_status_update(mail_response):
-    """Check if the mail response contains job status update information."""
-    return (
-        mail_response and
-        'status' in mail_response and
-        mail_response['status'] in STATUS_OPTIONS and
-        'id' in mail_response
-    )
+# Function to insert data into Neon database
+def insert_into_neon(data):
+    tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 
-def create_update_dict(mail_response):
-    """Create a dictionary for updating if the mail response is a job status update."""
-    if is_job_status_update(mail_response):
-        return {
-            "id": mail_response['id'],
-            "title": mail_response.get('title', ''),
-            "company": mail_response.get('company', ''),
-            "status": mail_response['status'],
-            "date": datetime.now().strftime('%Y-%m-%d')  # Current date
-        }
-    return None
+    # Establish a connection to the Neon database
+    conn = psycopg2.connect(
+        dbname='mails',
+        user='mails_owner',
+        password='FZrd7iIc2nXu',
+        host='ep-twilight-hall-a50hxbf5.us-east-2.aws.neon.tech',
+        port=5432
+    )
+    
+    cursor = conn.cursor()
+
+    # Insert data into the database
+    insert_query = """
+    INSERT INTO emails (position, company, status, sender_mail, summary, suggested_action, message_id, created_at, updated_at)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    # Assuming 'data' is a dictionary parsed from JSON
+    position = data.get('position', 'Unknown Position')
+    company = data.get('company', 'Unknown Company')
+    status = data.get('status', 'no_reply')  # Default to 'no_reply' if status is missing
+    sender_mail = data.get('sender_email', 'default@example.com')  # Provide a default or handle missing data
+    summary = data.get('summary', '')
+    suggested_action = data.get('suggested_action', '')
+    message_id = data.get('message_id', '')
+
+    # Insert into the database
+    cursor.execute(insert_query, (
+        position,
+        company,
+        status,
+        sender_mail,
+        summary,
+        suggested_action,
+        message_id,
+        datetime.now(),  # created_at
+        datetime.now()   # updated_at
+    ))
+
+    # Commit the transaction and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+# Read the sample Gemini response JSON
+def process_gemini_response(json_response):
+    data_list = json.loads(json_response)
+    # Assuming data_list is a list of data entries
+    for data in data_list:
+        print(data)
+        insert_into_neon(data)
 
 # Example usage
-with open('sample-mail-response.json', 'r') as file:
-    mail_response = json.load(file)
 
-update_dict = create_update_dict(mail_response)
+process_gemini_response(open('./sample-gemini-response.json').read())
 
-if update_dict:
-    print('Job status update dictionary:', update_dict)
-else:
-    print('No job status update found.')

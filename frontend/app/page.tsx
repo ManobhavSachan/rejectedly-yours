@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useAppContext } from "./context/ctx";
 import Skeleton from "@/components/ui/skeleton";
 import { FaBriefcase, FaHourglassHalf, FaComments, FaTimes, FaCheck, FaGift, FaEnvelopeOpenText } from "react-icons/fa";
+import JobDetailModal from "@/components/job-details-modal";
 
 // Define a type for the column keys
 type ColumnKey =
@@ -51,6 +52,8 @@ const columnIcons: Record<ColumnKey, JSX.Element> = {
 export default function Home() {
   const { jobs, loading, updateJobStatus } = useAppContext();
   const [entries, setEntries] = useState<{ [key: string]: Entry[] }>({});
+  const [selectedJob, setSelectedJob] = useState<Entry | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const grouped = jobs.reduce((acc, entry) => {
@@ -94,6 +97,16 @@ export default function Home() {
         [destColumn]: destItems,
       });
     }
+  };
+
+  const handleJobClick = (job: Entry) => {
+    setSelectedJob(job);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedJob(null);
   };
 
   return (
@@ -141,6 +154,7 @@ export default function Home() {
                             className={`mb-2 transition-shadow duration-200 ${
                               snapshot.isDragging ? "shadow-lg" : "shadow-sm"
                             }`}
+                            onClick={() => handleJobClick(entry)}
                           >
 
                               <Card
@@ -148,13 +162,13 @@ export default function Home() {
                               >
                                 <CardContent className="p-4">
                                   <h4 className="font-semibold text-gray-800">
-                                    {entry.title}
+                                    {entry.position}
                                   </h4>
                                   <p className="text-sm text-gray-600">
                                     {entry.company}
                                   </p>
                                   <p className="text-xs text-gray-500 mt-1">
-                                    Date: {entry.date}
+                                    Date: {entry.created_at}
                                   </p>
                                 </CardContent>
                               </Card>
@@ -172,6 +186,7 @@ export default function Home() {
           ))}
         </div>
       </DragDropContext>
+      <JobDetailModal isOpen={isModalOpen} onClose={closeModal} job={selectedJob} />
     </div>
   );
 }
