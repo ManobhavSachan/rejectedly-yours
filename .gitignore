@@ -1,5 +1,5 @@
 .env
-main/credentials.json
-main/myenv
-main/token.pickle
+scripts/credentials.json
+scripts/myenv
+scripts/token.pickle
 

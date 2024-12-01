@@ -38,7 +38,7 @@ def main():
 
 
     # Calculate the timestamp for one hour ago
-    one_hour_ago = datetime.datetime.now(datetime.UTC) - datetime.timedelta(hours=6)
+    one_hour_ago = datetime.datetime.now(datetime.UTC) - datetime.timedelta(hours=11)
     one_hour_ago_timestamp = int(one_hour_ago.timestamp())
 
     # Fetch emails received after the timestamp
