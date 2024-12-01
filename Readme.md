@@ -1,6 +1,6 @@
 # Rejectedly Yours
 
-## Introduction
+## Time Saving Introduction
 
 **I understand if you don't have time to read the whole file, so watch this video and Images to understand the project in a nutshell. :)
 You can now have a dashboard to view the status of your job application, add calendar events, and send follow-up emails in a click, all powered by LLM so you don't make a mistake. :)
