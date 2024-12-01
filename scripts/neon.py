@@ -22,10 +22,10 @@ def insert_into_neon(data):
 
     # Establish a connection to the Neon database
     conn = psycopg2.connect(
-        dbname='mails',
-        user='mails_owner',
-        password='FZrd7iIc2nXu',
-        host='ep-twilight-hall-a50hxbf5.us-east-2.aws.neon.tech',
+        dbname='YOUR_DBNAME',
+        user='YOUR_USER',
+        password='YOUR_PASSWORD',
+        host='YOUR_HOST',
         port=5432
     )
     

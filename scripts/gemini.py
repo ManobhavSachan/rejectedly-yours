@@ -4,7 +4,7 @@ import google.generativeai as genai
 from pydantic import BaseModel, ValidationError
 
 # Configure the Generative AI (replace with your actual key)
-genai.configure(api_key="AIzaSyAlIT4UaBB-rqe7Ofx-HCLx4NQJ6grt1EM")
+genai.configure(api_key="YOUR_API_KEY")
 model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"response_mime_type": "application/json"})
 
 # Pydantic model (unchanged)
