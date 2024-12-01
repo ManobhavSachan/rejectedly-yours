@@ -3,7 +3,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { fetchEntries, Entry, updateEntry } from "@/utils/api";
 
-// Define the shape of your context
 interface AppContextType {
   jobs: any[];
   setJobs: (jobs: any[]) => void;
@@ -12,7 +11,6 @@ interface AppContextType {
   updateJobStatus: (id: string, status: string) => Promise<void>;
 }
 
-// Create the context with default values
 export const AppContext = createContext<AppContextType>({
   jobs: [],
   setJobs: () => {},
@@ -58,5 +56,4 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   );
 };
 
-// Usage in a component
 export const useAppContext = () => useContext(AppContext);
