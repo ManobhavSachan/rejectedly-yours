@@ -18,7 +18,7 @@ Rejectedly Yours is a comprehensive application designed to help users track the
 - **AI Analysis**: Uses Google's Generative AI to analyze emails and extract job application details.
 - **Database Storage**: Stores analyzed data in a PostgreSQL database hosted on Neon.
 - **Frontend Interface**: Provides a user-friendly interface to view and manage job applications.
-
+- **Automated Fetching**: Automates the fetching and processing of emails using Kestra.
 ## Installation
 
 ### Prerequisites
@@ -27,12 +27,13 @@ Rejectedly Yours is a comprehensive application designed to help users track the
 - Python 3.9 or later
 - PostgreSQL
 - Google Cloud account for API access
+- Kestra account for scheduling
 
 ### Backend Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/rejectedly-yours.git
+   git clone https://github.com/ManobhavSachan/rejectedly-yours.git
    cd rejectedly-yours
    ```
 
@@ -74,11 +75,13 @@ Rejectedly Yours is a comprehensive application designed to help users track the
 
 - **Email Fetching**: The backend script fetches emails from Gmail and analyzes them using AI.
 - **Data Viewing**: The frontend displays job application data, allowing users to track their application statuses.
+- **Automated Fetching**: The Kestra workflow automates the fetching and processing of emails.
 
 ## Configuration
 
 - **Google API**: Ensure you have a valid `credentials.json` file for Google API access.
 - **Database**: Update the database connection details in the `.env` file.
+- **Kestra**: Configure the Kestra workflow to run the Python script at the desired interval.
 
 ## Project Structure
 
@@ -86,11 +89,16 @@ Rejectedly Yours is a comprehensive application designed to help users track the
   - `script.py`: Main script for fetching and analyzing emails.
   - `neon.py`: Handles database interactions.
   - `gemini.py`: AI analysis script.
+  - `gmail.py`: Email fetching script.
+  - `kestra.yaml`: Kestra workflow configuration.
 
 - **frontend/**: Contains the Next.js frontend application.
   - `components/`: React components for the UI.
   - `pages/`: Next.js pages for routing.
   - `utils/`: Utility functions and API interactions.
+  - `public/`: Static assets.
+  - `package.json`: Node.js package configuration.
+  - `next.config.js`: Next.js configuration.
 
 - **.gitignore**: Specifies files and directories to be ignored by Git.
 
